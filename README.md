@@ -5,12 +5,11 @@
 ## 1. How to Build
 **Step 1:** Download the source code. For example,
 ~~~
-$ git clone https://github.com/Jinkela-Xiao-Zuan-Feng-Mountaineer/Codebook.git
+$ git clone https://github.com/gilbert12tw/XL-pants.git
 ~~~
 
 **Step 2:** Go to the project root and build by
 ~~~
-$ cd Codebook
 $ python build.py
 ~~~
 
@@ -37,4 +36,5 @@ Install MiKTeX https://miktex.org/download
 
 ## 2. TODO list
 
-1. 排版問題 
+1. 修改 codes 內容
+2. 把不要的 code 從 list.tex 中註解掉，然後直接用 `xelatex --shell-escape Codebook.tex` 編譯
