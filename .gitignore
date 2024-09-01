@@ -1,8 +1,7 @@
-.DS_Store
+.DS_Stort
 *.exe
 *.aux
 *.log
 *.gz
 *.toc
 formula.pdf
-list.tex
