@@ -3,7 +3,7 @@ struct BCC { // 0-base
   vector<int> low, dfn, bln, stk, is_ap, cir;
   vector<vector<int>> G, bcc, nG;
   void make_bcc(int u) {
-    bcc.emplace_back(1, u); 
+    bcc.emplace_back(1, u);
     for (; stk.back() != u; stk.pop_back())
       bln[stk.back()] = nbcc, bcc[nbcc].pb(stk.back());
     stk.pop_back(), bln[u] = nbcc++;
@@ -24,7 +24,9 @@ struct BCC { // 0-base
     if (f == -1 && child < 2) is_ap[u] = 0;
     if (f == -1 && child == 0) make_bcc(u);
   }
-  BCC(int _n): n(_n), dft(), nbcc(), low(n), dfn(n), bln(n), is_ap(n), G(n) {}
+  BCC(int _n)
+    : n(_n), dft(), nbcc(), low(n), dfn(n), bln(n),
+      is_ap(n), G(n) {}
   void add_edge(int u, int v) {
     G[u].pb(v), G[v].pb(u);
   }
@@ -35,8 +37,7 @@ struct BCC { // 0-base
   void block_cut_tree() {
     cir.resize(nbcc);
     for (int i = 0; i < n; ++i)
-      if (is_ap[i])
-        bln[i] = nbcc++;
+      if (is_ap[i]) bln[i] = nbcc++;
     cir.resize(nbcc, 1), nG.resize(nbcc);
     for (int i = 0; i < nbcc && !cir[i]; ++i)
       for (int j : bcc[i])

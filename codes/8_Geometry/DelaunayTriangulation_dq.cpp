@@ -5,7 +5,7 @@ inside circumcircle of any triangle. */
 struct Edge {
   int id; // oidx[id]
   list<Edge>::iterator twin;
-  Edge(int _id = 0):id(_id) {}
+  Edge(int _id = 0) : id(_id) {}
 };
 struct Delaunay { // 0-base
   int n, oidx[N];
@@ -14,8 +14,8 @@ struct Delaunay { // 0-base
   void init(int _n, pll _p[]) {
     n = _n, iota(oidx, oidx + n, 0);
     for (int i = 0; i < n; ++i) head[i].clear();
-    sort(oidx, oidx + n, [&](int a, int b) 
-    { return _p[a] < _p[b]; });
+    sort(oidx, oidx + n,
+      [&](int a, int b) { return _p[a] < _p[b]; });
     for (int i = 0; i < n; ++i) p[i] = _p[oidx[i]];
     divide(0, n - 1);
   }
@@ -34,7 +34,10 @@ struct Delaunay { // 0-base
       pll pt[2] = {p[nw[0]], p[nw[1]]};
       for (auto it : head[nw[t]]) {
         int v = ori(pt[1], pt[0], p[it.id]);
-        if (v > 0 || (v == 0 && abs2(pt[t ^ 1] - p[it.id]) < abs2(pt[1] - pt[0])))
+        if (v > 0 ||
+          (v == 0 &&
+            abs2(pt[t ^ 1] - p[it.id]) <
+              abs2(pt[1] - pt[0])))
           return nw[t] = it.id, true;
       }
       return false;
@@ -45,13 +48,18 @@ struct Delaunay { // 0-base
       pll pt[2] = {p[nw[0]], p[nw[1]]};
       int ch = -1, sd = 0;
       for (int t = 0; t < 2; ++t)
-          for (auto it : head[nw[t]])
-              if (ori(pt[0], pt[1], p[it.id]) > 0 && (ch == -1 || in_cc({pt[0], pt[1], p[ch]}, p[it.id])))
-                  ch = it.id, sd = t;
+        for (auto it : head[nw[t]])
+          if (ori(pt[0], pt[1], p[it.id]) > 0 &&
+            (ch == -1 ||
+              in_cc({pt[0], pt[1], p[ch]}, p[it.id])))
+            ch = it.id, sd = t;
       if (ch == -1) break; // upper common tangent
-      for (auto it = head[nw[sd]].begin(); it != head[nw[sd]].end(); )
-        if (seg_strict_intersect(pt[sd], p[it->id], pt[sd ^ 1], p[ch]))
-          head[it->id].erase(it->twin), head[nw[sd]].erase(it++);
+      for (auto it = head[nw[sd]].begin();
+           it != head[nw[sd]].end();)
+        if (seg_strict_intersect(
+              pt[sd], p[it->id], pt[sd ^ 1], p[ch]))
+          head[it->id].erase(it->twin),
+            head[nw[sd]].erase(it++);
         else ++it;
       nw[sd] = ch, addEdge(nw[0], nw[1]);
     }

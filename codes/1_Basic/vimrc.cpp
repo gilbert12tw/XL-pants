@@ -1,10 +1,7 @@
-"This file should be placed at ~/.vimrc"
 se nu ai hls et ru ic is sc cul
 se re=1 ts=4 sts=4 sw=4 ls=2 mouse=a
 syntax on
-hi cursorline cterm=none ctermbg=89
-set bg=dark
-inoremap {<CR> {<CR>}<Esc>ko<tab>
+hi cursorline cterm=none
 "Select region and type :Hash to hash your selection."
 ca Hash w !cpp -dD -P -fpreprocessed \| tr -d '[:space:]' \| md5sum \| cut -c-6
-testing
+map <F9> :w !clear && g++ -std=c++17 -Ddebug -O2 -Wall -lm -g % && ./a.out<CR>

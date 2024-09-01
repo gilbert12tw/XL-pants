@@ -2,7 +2,8 @@ namespace schreier {
 int n;
 vector<vector<vector<int>>> bkts, binv;
 vector<vector<int>> lk;
-vector<int> operator*(const vector<int> &a, const vector<int> &b) {
+vector<int> operator*(
+  const vector<int> &a, const vector<int> &b) {
   vector<int> res(SZ(a));
   for (int i = 0; i < SZ(a); ++i) res[i] = b[a[i]];
   return res;
@@ -29,7 +30,9 @@ int filter(const vector<int> &g, bool add = true) {
   }
   return -1;
 }
-bool inside(const vector<int> &g) { return filter(g, false) == -1; }
+bool inside(const vector<int> &g) {
+  return filter(g, false) == -1;
+}
 void solve(const vector<vector<int>> &gen, int _n) {
   n = _n;
   bkts.clear(), bkts.resize(n);
@@ -68,4 +71,5 @@ ll size() {
   ll res = 1;
   for (int i = 0; i < n; ++i) res = res * SZ(bkts[i]);
   return res;
-}}
+}
+} // namespace schreier

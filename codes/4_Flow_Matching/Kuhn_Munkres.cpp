@@ -4,8 +4,7 @@ struct KM { // 0-base, maximum matching
   bool vl[N], vr[N];
   void init(int _n) {
     n = _n;
-    for (int i = 0; i < n; ++i)
-      fill_n(w[i], n, -INF);
+    for (int i = 0; i < n; ++i) fill_n(w[i], n, -INF);
   }
   void add_edge(int a, int b, ll wei) {
     w[a][b] = wei;
@@ -17,15 +16,17 @@ struct KM { // 0-base, maximum matching
     return 0;
   }
   void bfs(int s) {
-    fill_n(slk, n, INF), fill_n(vl, n, 0), fill_n(vr, n, 0);
+    fill_n(slk, n, INF), fill_n(vl, n, 0),
+      fill_n(vr, n, 0);
     ql = qr = 0, qu[qr++] = s, vr[s] = 1;
     for (ll d;;) {
       while (ql < qr)
         for (int x = 0, y = qu[ql++]; x < n; ++x)
-          if (!vl[x] && slk[x] >= (d = hl[x] + hr[y] - w[x][y])) {
+          if (!vl[x] &&
+            slk[x] >= (d = hl[x] + hr[y] - w[x][y])) {
             if (pre[x] = y, d) slk[x] = d;
             else if (!Check(x)) return;
-        }
+          }
       d = INF;
       for (int x = 0; x < n; ++x)
         if (!vl[x] && d > slk[x]) d = slk[x];
@@ -39,7 +40,8 @@ struct KM { // 0-base, maximum matching
     }
   }
   ll solve() {
-    fill_n(fl, n, -1), fill_n(fr, n, -1), fill_n(hr, n, 0);
+    fill_n(fl, n, -1), fill_n(fr, n, -1),
+      fill_n(hr, n, 0);
     for (int i = 0; i < n; ++i)
       hl[i] = *max_element(w[i], w[i] + n);
     for (int i = 0; i < n; ++i) bfs(i);

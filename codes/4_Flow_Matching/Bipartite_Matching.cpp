@@ -4,7 +4,8 @@ struct Bipartite_Matching { // 0-base
   bool dfs(int u) {
     for (int &i = cur[u]; i < SZ(G[u]); ++i) {
       int e = G[u][i];
-      if (mq[e] == l || (dis[mq[e]] == dis[u] + 1 && dfs(mq[e])))
+      if (mq[e] == l ||
+        (dis[mq[e]] == dis[u] + 1 && dfs(mq[e])))
         return mp[mq[e] = u] = e, 1;
     }
     return dis[u] = -1, 0;
@@ -13,8 +14,7 @@ struct Bipartite_Matching { // 0-base
     queue<int> q;
     fill_n(dis, l + 1, -1);
     for (int i = 0; i < l; ++i)
-      if (!~mp[i])
-        q.push(i), dis[i] = 0;
+      if (!~mp[i]) q.push(i), dis[i] = 0;
     while (!q.empty()) {
       int u = q.front();
       q.pop();
@@ -37,7 +37,6 @@ struct Bipartite_Matching { // 0-base
   void add_edge(int s, int t) { G[s].pb(t); }
   void init(int _l, int _r) {
     l = _l, r = _r;
-    for (int i = 0; i <= l; ++i)
-      G[i].clear();
+    for (int i = 0; i <= l; ++i) G[i].clear();
   }
 };

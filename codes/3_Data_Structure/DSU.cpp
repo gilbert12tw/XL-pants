@@ -1,8 +1,6 @@
 struct DSU {
   vector<int> arr;
-  DSU(int n = 0): arr(n) {
-    iota(ALL(arr), 0);
-  }
+  DSU(int n = 0) : arr(n) { iota(ALL(arr), 0); }
   int boss(int x) {
     if (arr[x] == x) return x;
     return arr[x] = boss(arr[x]);

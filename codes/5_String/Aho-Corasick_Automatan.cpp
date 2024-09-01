@@ -17,16 +17,15 @@ struct AC_Automatan {
   void make_fl() {
     queue<int> q;
     q.push(1), fl[1] = 0;
-    for (int t = 0; !q.empty(); ) {
+    for (int t = 0; !q.empty();) {
       int R = q.front();
       q.pop(), ord[t++] = R;
       for (int i = 0; i < sigma; ++i)
         if (~nx[R][i]) {
           int X = rnx[R][i] = nx[R][i], Z = fl[R];
-          for (; Z && !~nx[Z][i]; ) Z = fl[Z];
+          for (; Z && !~nx[Z][i];) Z = fl[Z];
           fl[X] = Z ? nx[Z][i] : 1, q.push(X);
-        }
-        else rnx[R][i] = R > 1 ? rnx[fl[R]][i] : 1;
+        } else rnx[R][i] = R > 1 ? rnx[fl[R]][i] : 1;
     }
   }
   void solve() {

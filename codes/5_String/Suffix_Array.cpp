@@ -30,15 +30,15 @@ struct suffix_array {
   void make_he(const string &s, int n) {
     for (int j = 0, k = 0; j < n; ++j) {
       if (ra[j])
-        for (; s[j + k] == s[sa[ra[j] - 1] + k]; ++k)
-          ;
+        for (; s[j + k] == s[sa[ra[j] - 1] + k]; ++k);
       he[ra[j]] = k, k = max(0, k - 1);
     }
   }
   int sa[MAXN], ra[MAXN], he[MAXN];
   void build(const string &s) {
     int n = SZ(s);
-    fill_n(sa, n, 0), fill_n(ra, n, 0), fill_n(he, n, 0);
+    fill_n(sa, n, 0), fill_n(ra, n, 0),
+      fill_n(he, n, 0);
     fill_n(box, n, 0), fill_n(tp, n, 0), m = 256;
     make_sa(s, n), make_he(s, n);
   }

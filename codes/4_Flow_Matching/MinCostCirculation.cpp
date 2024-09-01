@@ -1,6 +1,6 @@
 struct MinCostCirculation { // 0-base
   struct Edge {
-    ll from, to, cap, fcap, flow, cost, rev; 
+    ll from, to, cap, fcap, flow, cost, rev;
   } *past[N];
   vector<Edge> G[N];
   ll dis[N], inq[N], n;
@@ -27,7 +27,8 @@ struct MinCostCirculation { // 0-base
     BellmanFord(cur.to);
     if (dis[cur.from] + cur.cost < 0) {
       ++cur.flow, --G[cur.to][cur.rev].flow;
-      for (int i = cur.from; past[i]; i = past[i]->from) {
+      for (int i = cur.from; past[i];
+           i = past[i]->from) {
         auto &e = *past[i];
         ++e.flow, --G[e.to][e.rev].flow;
       }
@@ -37,19 +38,19 @@ struct MinCostCirculation { // 0-base
   void solve(int mxlg) {
     for (int b = mxlg; b >= 0; --b) {
       for (int i = 0; i < n; ++i)
-        for (auto &e : G[i])
-          e.cap *= 2, e.flow *= 2;
+        for (auto &e : G[i]) e.cap *= 2, e.flow *= 2;
       for (int i = 0; i < n; ++i)
         for (auto &e : G[i])
-          if (e.fcap >> b & 1)
-            try_edge(e);
+          if (e.fcap >> b & 1) try_edge(e);
     }
   }
-  void init(int _n) { n = _n;
+  void init(int _n) {
+    n = _n;
     for (int i = 0; i < n; ++i) G[i].clear();
   }
   void add_edge(ll a, ll b, ll cap, ll cost) {
-    G[a].pb(Edge{a, b, 0, cap, 0, cost, SZ(G[b]) + (a == b)});
+    G[a].pb(Edge{
+      a, b, 0, cap, 0, cost, SZ(G[b]) + (a == b)});
     G[b].pb(Edge{b, a, 0, 0, 0, -cost, SZ(G[a]) - 1});
   }
 } mcmf; // O(VE * ElogC)

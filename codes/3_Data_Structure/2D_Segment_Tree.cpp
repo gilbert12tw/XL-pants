@@ -3,7 +3,7 @@ struct seg_2D {
   struct node {
     int data;
     node *lc, *rc;
-  } * root;
+  } *root;
   node *merge(node *a, node *b, int l, int r) {
     node *p = new node;
     p->data = max(a->data, b->data);
@@ -34,7 +34,7 @@ struct seg_1D {
   struct node {
     seg_2D data;
     node *lc, *rc;
-  } * root;
+  } *root;
   node *s_build(int l, int r) {
     node *p = new node;
     if (l == r)

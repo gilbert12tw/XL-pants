@@ -17,6 +17,8 @@ void rotatingSweepLine(vector<pii> &ps) {
   for (int i = 0; i < m; ++i) {
     auto l = line[i];
     // do something
-    tie(pos[l.X], pos[l.Y], id[pos[l.X]], id[pos[l.Y]]) = make_tuple(pos[l.Y], pos[l.X], l.Y, l.X);
+    tie(
+      pos[l.X], pos[l.Y], id[pos[l.X]], id[pos[l.Y]]) =
+      make_tuple(pos[l.Y], pos[l.X], l.Y, l.X);
   }
 }

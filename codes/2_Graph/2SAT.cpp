@@ -2,10 +2,8 @@ struct SAT { // 0-base
   int n;
   vector<bool> istrue;
   SCC scc;
-  SAT(int _n): n(_n), istrue(n + n), scc(n + n) {}
-  int rv(int a) {
-    return a >= n ? a - n : a + n;
-  }
+  SAT(int _n) : n(_n), istrue(n + n), scc(n + n) {}
+  int rv(int a) { return a >= n ? a - n : a + n; }
   void add_clause(int a, int b) {
     scc.add_edge(rv(a), b), scc.add_edge(rv(b), a);
   }

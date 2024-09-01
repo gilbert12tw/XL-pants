@@ -1,6 +1,8 @@
 struct Q {
   ll p, q;
-  Q go(Q b, ll d) { return {p + b.p*d, q + b.q*d}; }
+  Q go(Q b, ll d) {
+    return {p + b.p * d, q + b.q * d};
+  }
 };
 bool pred(Q);
 // returns smallest p/q in [lo, hi] such that
@@ -12,7 +14,8 @@ Q frac_bs(ll N) {
   bool dir = 1, L = 1, H = 1;
   for (; L || H; dir = !dir) {
     ll len = 0, step = 1;
-    for (int t = 0; t < 2 && (t ? step/=2 : step*=2);)
+    for (int t = 0;
+         t < 2 && (t ? step /= 2 : step *= 2);)
       if (Q mid = hi.go(lo, len + step);
           mid.p > N || mid.q > N || dir ^ pred(mid))
         t++;

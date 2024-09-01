@@ -8,9 +8,7 @@ struct SteinerTree { // 0-base
       dst[i][i] = vcst[i] = 0;
     }
   }
-  void chmin(int &x, int val) {
-    x = min(x, val);
-  }
+  void chmin(int &x, int val) { x = min(x, val); }
   void add_edge(int ui, int vi, int wi) {
     chmin(dst[ui][vi], wi);
   }
@@ -20,7 +18,7 @@ struct SteinerTree { // 0-base
         for (int j = 0; j < n; ++j)
           chmin(dst[i][j], dst[i][k] + dst[k][j]);
   }
-  int solve(const vector<int>& ter) {
+  int solve(const vector<int> &ter) {
     shortest_path();
     int t = SZ(ter), full = (1 << t) - 1;
     for (int i = 0; i <= full; ++i)
@@ -30,11 +28,14 @@ struct SteinerTree { // 0-base
       if (!(msk & (msk - 1))) {
         int who = __lg(msk);
         for (int i = 0; i < n; ++i)
-          dp[msk][i] = vcst[ter[who]] + dst[ter[who]][i];
+          dp[msk][i] =
+            vcst[ter[who]] + dst[ter[who]][i];
       }
       for (int i = 0; i < n; ++i)
-        for (int sub = (msk - 1) & msk; sub; sub = (sub - 1) & msk)
-          chmin(dp[msk][i], dp[sub][i] + dp[msk ^ sub][i] - vcst[i]);
+        for (int sub = (msk - 1) & msk; sub;
+             sub = (sub - 1) & msk)
+          chmin(dp[msk][i],
+            dp[sub][i] + dp[msk ^ sub][i] - vcst[i]);
       for (int i = 0; i < n; ++i) {
         tdst[i] = INF;
         for (int j = 0; j < n; ++j)

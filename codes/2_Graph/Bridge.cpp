@@ -7,8 +7,7 @@ struct ECC { // 0-base
     for (auto [v, e] : G[u])
       if (!dfn[v])
         dfs(v, e), low[u] = min(low[u], low[v]);
-      else if (e != f) 
-        low[u] = min(low[u], dfn[v]);
+      else if (e != f) low[u] = min(low[u], dfn[v]);
     if (low[u] == dfn[u]) {
       if (f != -1) is_bridge[f] = 1;
       for (; stk.back() != u; stk.pop_back())
@@ -16,7 +15,9 @@ struct ECC { // 0-base
       bln[u] = necc++, stk.pop_back();
     }
   }
-  ECC(int _n): n(_n), dft(), ecnt(), necc(), low(n), dfn(n), bln(n), G(n) {}
+  ECC(int _n)
+    : n(_n), dft(), ecnt(), necc(), low(n), dfn(n),
+      bln(n), G(n) {}
   void add_edge(int u, int v) {
     G[u].pb(pii(v, ecnt)), G[v].pb(pii(u, ecnt++));
   }

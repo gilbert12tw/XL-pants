@@ -43,8 +43,7 @@ struct SAM {
       push(str[i] - 'a' + 1);
   }
   void count() {
-    for (int i = 1; i <= tot; ++i)
-      ++in[mom[i]];
+    for (int i = 1; i <= tot; ++i) ++in[mom[i]];
     queue<int> q;
     for (int i = 1; i <= tot; ++i)
       if (!in[i]) q.push(i);
@@ -52,8 +51,7 @@ struct SAM {
       int u = q.front();
       q.pop();
       cnt[mom[u]] += cnt[u];
-      if (!--in[mom[u]])
-        q.push(mom[u]);
+      if (!--in[mom[u]]) q.push(mom[u]);
     }
   }
 } sam;

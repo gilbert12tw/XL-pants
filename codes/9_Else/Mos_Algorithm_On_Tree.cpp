@@ -1,6 +1,6 @@
 /*
 Mo's Algorithm On Tree
-Preprocess: 
+Preprocess:
 1) LCA
 2) dfs with in[u] = dft++, out[u] = dft++
 3) ord[in[u]] = ord[out[u]] = u
@@ -14,8 +14,7 @@ struct Query {
       q.lca = -1, q.L = out[c ^ u ^ v], q.R = out[c];
     else if (out[u] < in[v])
       q.lca = c, q.L = out[u], q.R = in[v];
-    else
-      q.lca = c, q.L = out[v], q.R = in[u];
+    else q.lca = c, q.L = out[v], q.R = in[u];
     q.Lid = q.L / blk;
   }
   bool operator<(const Query &q) const {
@@ -24,9 +23,9 @@ struct Query {
   }
 };
 void flip(int x) {
-    if (inset[x]) sub(arr[x]); // TODO
-    else add(arr[x]); // TODO
-    inset[x] = ~inset[x];
+  if (inset[x]) sub(arr[x]); // TODO
+  else add(arr[x]); // TODO
+  inset[x] = ~inset[x];
 }
 void solve(vector<Query> query) {
   sort(ALL(query));

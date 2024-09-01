@@ -1,6 +1,7 @@
-template<class T, class Info>
-struct min_heap {
-  priority_queue<pair<T, Info>, vector<pair<T, Info>>, greater<pair<T, Info>>> pq;
+template <class T, class Info> struct min_heap {
+  priority_queue<pair<T, Info>, vector<pair<T, Info>>,
+    greater<pair<T, Info>>>
+    pq;
   T lazy = 0;
   void push(pair<T, Info> v) {
     pq.emplace(v.X - lazy, v.Y);
@@ -18,13 +19,7 @@ struct min_heap {
       rgt.pop();
     }
   }
-  void pop() {
-    pq.pop();
-  }
-  bool empty() {
-    return pq.empty();
-  }
-  void add_lazy(T v) {
-    lazy += v;
-  }
+  void pop() { pq.pop(); }
+  bool empty() { return pq.empty(); }
+  void add_lazy(T v) { lazy += v; }
 };

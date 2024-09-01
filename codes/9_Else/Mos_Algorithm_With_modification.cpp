@@ -4,8 +4,8 @@ Block: N^{2/3}, Complexity: N^{5/3}
 */
 struct Query {
   int L, R, LBid, RBid, T;
-  Query(int l, int r, int t):
-    L(l), R(r), LBid(l / blk), RBid(r / blk), T(t) {}
+  Query(int l, int r, int t)
+    : L(l), R(r), LBid(l / blk), RBid(r / blk), T(t) {}
   bool operator<(const Query &q) const {
     if (LBid != q.LBid) return LBid < q.LBid;
     if (RBid != q.RBid) return RBid < q.RBid;
@@ -14,7 +14,7 @@ struct Query {
 };
 void solve(vector<Query> query) {
   sort(ALL(query));
-  int L=0, R=0, T=-1;
+  int L = 0, R = 0, T = -1;
   for (auto q : query) {
     while (T < q.T) addTime(L, R, ++T); // TODO
     while (T > q.T) subTime(L, R, T--); // TODO

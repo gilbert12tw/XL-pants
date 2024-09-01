@@ -23,14 +23,14 @@ struct Heavy_light_Decomposition { // 1-base
     if (!mxson[u]) return;
     cut(mxson[u], link);
     for (int i : G[u])
-      if (i != pa[u] && i != mxson[u])
-        cut(i, i);
+      if (i != pa[u] && i != mxson[u]) cut(i, i);
   }
   void build() { dfs(1, 1, 1), cut(1, 1), /*build*/; }
   int query(int a, int b) {
     int ta = ulink[a], tb = ulink[b], res = 0;
     while (ta != tb) {
-      if (deep[ta] > deep[tb]) swap(ta, tb), swap(a, b);
+      if (deep[ta] > deep[tb])
+        swap(ta, tb), swap(a, b);
       // query(pl[tb], pl[b])
       tb = ulink[b = pa[tb]];
     }

@@ -29,7 +29,7 @@ private:
     inline void up() {
       s = (l ? l->s : 0) + 1 + (r ? r->s : 0);
     }
-  } * root;
+  } *root;
   const double alpha, loga;
   const T INF; //????INF,?????
   int maxn;

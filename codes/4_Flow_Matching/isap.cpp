@@ -45,8 +45,7 @@ struct Maxflow {
   int solve() {
     int res = 0;
     gap[0] = tot;
-    for (res = 0; d[s] < tot; res += dfs(s, INF))
-      ;
+    for (res = 0; d[s] < tot; res += dfs(s, INF));
     return res;
   }
 } flow;

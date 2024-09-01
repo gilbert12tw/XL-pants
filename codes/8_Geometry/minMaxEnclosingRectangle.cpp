@@ -15,10 +15,15 @@ pdd solve(vector<pll> &dots) {
     if (!i) l = (r + 1) % n;
     while (dot(nw, vec(l + 1)) < dot(nw, vec(l)))
       l = (l + 1) % n;
-    Min = min(Min, (double)(dot(nw, vec(r)) - dot(nw, vec(l))) * cross(nw, vec(u)) / abs2(nw));
-    deg = acos(dot(diff(r, l), vec(u)) / abs(diff(r, l)) / abs(vec(u)));
+    Min = min(Min,
+      (double)(dot(nw, vec(r)) - dot(nw, vec(l))) *
+        cross(nw, vec(u)) / abs2(nw));
+    deg = acos(dot(diff(r, l), vec(u)) /
+      abs(diff(r, l)) / abs(vec(u)));
     deg = (qi - deg) / 2;
-    Max = max(Max, abs(diff(r, l)) * abs(vec(u)) * sin(deg) * sin(deg));
+    Max = max(Max,
+      abs(diff(r, l)) * abs(vec(u)) * sin(deg) *
+        sin(deg));
   }
   return pdd(Min, Max);
 }

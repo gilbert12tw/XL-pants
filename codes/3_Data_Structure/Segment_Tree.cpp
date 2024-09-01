@@ -13,7 +13,7 @@ struct Segment_Tree {
       }
       lazy = 0;
     }
-  } * root;
+  } *root;
   int l, r;
   node *build(int l, int r, int *data) {
     node *p = new node();
