@@ -1,5 +1,5 @@
 namespace vizing { // returns edge coloring in adjacent
-                   // matrix G. 1 - based
+                   // matrix G. 1-based
 const int N = 105;
 int C[N][N], G[N][N], X[N], vst[N], n;
 void init(int _n) {

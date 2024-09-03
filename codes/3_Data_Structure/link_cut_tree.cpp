@@ -1,103 +1,91 @@
-struct Splay { // xor-sum
-  static Splay nil;
-  Splay *ch[2], *f;
-  int val, sum, rev, size;
-  Splay(int _val = 0)
-    : val(_val), sum(_val), rev(0), size(1) {
-    f = ch[0] = ch[1] = &nil;
+struct SplayTree {
+  struct Node {
+    int ch[2] = {0, 0}, p = 0;
+    long long self = 0, path = 0; // Path aggregates
+    long long sub = 0, vir = 0; // Subtree aggregates
+    bool flip = 0; // Lazy tags
+  }; vector<Node> T;
+  SplayTree(int n) : T(n + 1) {}
+  void push(int x) {
+    if (!x || !T[x].flip) return;
+    int l = T[x].ch[0], r = T[x].ch[1];
+    T[l].flip ^= 1, T[r].flip ^= 1;
+    swap(T[x].ch[0], T[x].ch[1]), T[x].flip = 0;
   }
-  bool isr() {
-    return f->ch[0] != this && f->ch[1] != this;
+  void pull(int x) {
+    int l = T[x].ch[0], r = T[x].ch[1];
+    push(l), push(r);
+    T[x].path = T[l].path + T[x].self + T[r].path;
+    T[x].sub = T[x].vir+T[l].sub+T[r].sub+T[x].self;
   }
-  int dir() { return f->ch[0] == this ? 0 : 1; }
-  void setCh(Splay *c, int d) {
-    ch[d] = c;
-    if (c != &nil) c->f = this;
-    pull();
+  void set(int x, int d, int y) {
+    T[x].ch[d] = y, T[y].p = x, pull(x);
   }
-  void give_tag(int r) {
-    if (r) swap(ch[0], ch[1]), rev ^= 1;
+  void splay(int x) {
+    auto dir = [&](int x) {
+      int p = T[x].p; if (!p) return -1;
+      return T[p].ch[0] == x ? 0 : T[p].ch[1] == x ? 1:-1;
+    };
+    auto rotate = [&](int x) {
+      int y = T[x].p, z = T[y].p, dx = dir(x), dy = dir(y);
+      set(y, dx, T[x].ch[!dx]), set(x, !dx, y);
+      if (~dy) set(z, dy, x); T[x].p = z;
+    };
+    for (push(x); ~dir(x);) {
+      int y = T[x].p, z = T[y].p;
+      push(z), push(y), push(x);
+      int dx = dir(x), dy = dir(y);
+      if (~dy) rotate(dx != dy ? x : y);
+      rotate(x);
+    }
   }
-  void push() {
-    if (ch[0] != &nil) ch[0]->give_tag(rev);
-    if (ch[1] != &nil) ch[1]->give_tag(rev);
-    rev = 0;
+};
+
+struct LinkCut : SplayTree {
+  LinkCut(int n) : SplayTree(n) {}
+  int access(int x) {
+    int u = x, v = 0;
+    for (; u; v = u, u = T[u].p) {
+      splay(u); int &ov = T[u].ch[1];
+      T[u].vir += T[ov].sub, T[u].vir -= T[v].sub;
+      ov = v, pull(u);
+    }
+    return splay(x), v;
   }
-  void pull() {
-    // take care of the nil!
-    size = ch[0]->size + ch[1]->size + 1;
-    sum = ch[0]->sum ^ ch[1]->sum ^ val;
-    if (ch[0] != &nil) ch[0]->f = this;
-    if (ch[1] != &nil) ch[1]->f = this;
+  void reroot(int x) {
+    access(x), T[x].flip ^= 1, push(x);
   }
-} Splay::nil;
-Splay *nil = &Splay::nil;
-void rotate(Splay *x) {
-  Splay *p = x->f;
-  int d = x->dir();
-  if (!p->isr()) p->f->setCh(x, p->dir());
-  else x->f = p->f;
-  p->setCh(x->ch[!d], d);
-  x->setCh(p, !d);
-  p->pull(), x->pull();
-}
-void splay(Splay *x) {
-  vector<Splay *> splayVec;
-  for (Splay *q = x;; q = q->f) {
-    splayVec.pb(q);
-    if (q->isr()) break;
+  void Link(int u, int v) {
+    reroot(u), access(v);
+    T[v].vir += T[u].sub; T[u].p = v, pull(v);
   }
-  reverse(ALL(splayVec));
-  for (auto it : splayVec) it->push();
-  while (!x->isr()) {
-    if (x->f->isr()) rotate(x);
-    else if (x->dir() == x->f->dir())
-      rotate(x->f), rotate(x);
-    else rotate(x), rotate(x);
+  void Cut(int u, int v) {
+    reroot(u), access(v);
+    T[v].ch[0] = T[u].p = 0; pull(v);
   }
-}
-Splay *access(Splay *x) {
-  Splay *q = nil;
-  for (; x != nil; x = x->f)
-    splay(x), x->setCh(q, 1), q = x;
-  return q;
-}
-void root_path(Splay *x) { access(x), splay(x); }
-void chroot(Splay *x) {
-  root_path(x), x->give_tag(1);
-  x->push(), x->pull();
-}
-void split(Splay *x, Splay *y) {
-  chroot(x), root_path(y);
-}
-void link(Splay *x, Splay *y) {
-  root_path(x), chroot(y);
-  x->setCh(y, 1);
-}
-void cut(Splay *x, Splay *y) {
-  split(x, y);
-  if (y->size != 5) return;
-  y->push();
-  y->ch[0] = y->ch[0]->f = nil;
-}
-Splay *get_root(Splay *x) {
-  for (root_path(x); x->ch[0] != nil; x = x->ch[0])
-    x->push();
-  splay(x);
-  return x;
-}
-bool conn(Splay *x, Splay *y) {
-  return get_root(x) == get_root(y);
-}
-Splay *lca(Splay *x, Splay *y) {
-  access(x), root_path(y);
-  if (y->f == nil) return y;
-  return y->f;
-}
-void change(Splay *x, int val) {
-  splay(x), x->val = val, x->pull();
-}
-int query(Splay *x, Splay *y) {
-  split(x, y);
-  return y->sum;
-}
+  // Rooted tree LCA. 0 if u and v arent connected.
+  int LCA(int u, int v) {
+    if (u == v) return u; access(u);
+    int ret = access(v);
+    return T[u].p ? ret : 0;
+  }
+  // Query subtree of u where v is outside the subtree.
+  long long Subtree(int u, int v) {
+    reroot(v), access(u);
+    return T[u].vir + T[u].self;
+  }
+  // Query path [u..v]
+  long long Path(int u, int v) {
+    reroot(u), access(v); return T[v].path;
+  }
+  // Find root on original tree
+  int Find(int x) {
+    access(x), splay(x);
+    while (T[x].ch[0]) x = T[x].ch[0], push(x);
+    splay(x); return x;
+  }
+  // Update vertex u with value v
+  void Update(int u, long long v) {
+    access(u), T[u].self = v, pull(u);
+  }
+};

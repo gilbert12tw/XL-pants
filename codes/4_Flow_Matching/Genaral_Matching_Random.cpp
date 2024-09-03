@@ -5,9 +5,7 @@ struct GenearlMatching { // 1-base
   GenearlMatching(int n_): n(n_), ans(0), 
   G(n_+1, vector<int>(n_+1, 0)), vis(n_+1), linked(n_+1), 
   p(n_+1), q(n_+1), anslink(n_+1) {}
-  void add_edge(int u, int v) {
-    G[u][v] = G[v][u] = 1;
-  }
+  void add_edge(int u, int v) { G[u][v] = G[v][u] = 1; }
   void update(int tmp) {
     ans = tmp;
     for (int i = 1; i <= n; i++)
@@ -17,11 +15,9 @@ struct GenearlMatching { // 1-base
     vis[u] = 1;
     for (int i = 1; i <= n; i++) {
       int v = q[i];
-      if (vis[v] || !G[u][v]) continue;
-      vis[v] = 1;
+      if (vis[v] || !G[u][v]) continue; vis[v] = 1;
       if (!linked[v] || match(linked[v])) {
-        linked[v] = u; linked[u] = v;
-        return true;
+        linked[v] = u; linked[u] = v; return true;
       }
     }
     return false;

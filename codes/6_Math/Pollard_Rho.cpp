@@ -1,19 +1,23 @@
-map<ll, int> cnt;
-void PollardRho(ll n) {
-  if (n == 1) return;
-  if (prime(n)) return ++cnt[n], void();
-  if (n % 2 == 0)
-    return PollardRho(n / 2), ++cnt[2], void();
-  ll x = 2, y = 2, d = 1, p = 1;
-#define f(x, n, p) ((mul(x, x, n) + p) % n)
+// when n is prime return any non-trivial factor
+llu f(llu x, llu m) { return (mul(x, x, m) + 1) % m; }
+llu pollard_rho(llu n) {// don't input 1
+  if (!(n & 1)) return 2;
   while (true) {
-    if (d != n && d != 1) {
-      PollardRho(n / d);
-      PollardRho(d);
-      return;
+    llu y = 2, x = rand() % (n - 1) + 1, res = 1;
+    for (int sz = 2; res == 1; sz *= 2) {
+      for (int i = 0; i < sz && res <= 1; i++) {
+        x = f(x, n);
+        res = gcd(x - y >= 0 ? x - y : y - x, n);
+      }
+      y = x;
     }
-    if (d == n) ++p;
-    x = f(x, n, p), y = f(f(y, n, p), n, p);
-    d = gcd(abs(x - y), n);
+    if (res != 0 && res != n) return res;
+  }
+}
+void fac(llu x, vector<llu> &ans) {
+  if (isprime(x)) ans.emplace_back(x);
+  else {
+    llu p = pollard_rho(x); 
+    fac(x / p, ans); fac(p, ans);
   }
 }

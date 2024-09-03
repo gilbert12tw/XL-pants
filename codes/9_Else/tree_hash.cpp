@@ -1,8 +1,6 @@
 ull seed;
 ull shift(ull x) {
-  x ^= x << 13;
-  x ^= x >> 7;
-  x ^= x << 17;
+  x ^= x << 13; x ^= x >> 7; x ^= x << 17;
   return x;
 }
 ull dfs(int u, int f) {
