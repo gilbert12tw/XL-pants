@@ -11,8 +11,7 @@ struct MaxFlow { // 0-base
       if (dis[e.to] == dis[u] + 1 && e.flow != e.cap) {
         int df = dfs(e.to, min(e.cap - e.flow, cap));
         if (df) {
-          e.flow += df;
-          G[e.to][e.rev].flow -= df;
+          e.flow += df; G[e.to][e.rev].flow -= df;
           return df;
         }
       }
@@ -25,12 +24,10 @@ struct MaxFlow { // 0-base
     queue<int> q;
     q.push(s), dis[s] = 0;
     while (!q.empty()) {
-      int tmp = q.front();
-      q.pop();
+      int tmp = q.front(); q.pop();
       for (auto &u : G[tmp])
         if (!~dis[u.to] && u.flow != u.cap) {
-          q.push(u.to);
-          dis[u.to] = dis[tmp] + 1;
+          q.push(u.to); dis[u.to] = dis[tmp] + 1;
         }
     }
     return dis[t] != -1;

@@ -1,35 +1,31 @@
-struct AC_Automatan {
-  int nx[len][sigma], fl[len], cnt[len], ord[len], top;
-  int rnx[len][sigma]; // node actually be reached
-  int newnode() {
-    fill_n(nx[top], sigma, -1);
-    return top++;
-  }
-  void init() { top = 1, newnode(); }
-  int input(string &s) {
-    int X = 1;
-    for (char c : s) {
-      if (!~nx[X][c - 'A']) nx[X][c - 'A'] = newnode();
-      X = nx[X][c - 'A'];
-    }
-    return X; // return the end node of string
-  }
-  void make_fl() {
-    queue<int> q;
-    q.push(1), fl[1] = 0;
-    for (int t = 0; !q.empty();) {
-      int R = q.front();
-      q.pop(), ord[t++] = R;
-      for (int i = 0; i < sigma; ++i)
-        if (~nx[R][i]) {
-          int X = rnx[R][i] = nx[R][i], Z = fl[R];
-          for (; Z && !~nx[Z][i];) Z = fl[Z];
-          fl[X] = Z ? nx[Z][i] : 1, q.push(X);
-        } else rnx[R][i] = R > 1 ? rnx[fl[R]][i] : 1;
-    }
-  }
-  void solve() {
-    for (int i = top - 2; i > 0; --i)
-      cnt[fl[ord[i]]] += cnt[ord[i]];
-  }
-} ac;
+struct auto_AC_machine {
+	static const int mxN = 5e5 + 5;
+	int trie[mxN][26], ed[mxN], fail[mxN], dp[mxN], tot; 
+	inline int insert(string &s) {
+		int u = 0;
+		for(auto i : s) {
+			if(!trie[u][i - 'a']) trie[u][i - 'a'] = ++tot;
+			u = trie[u][i - 'a'];
+		}
+		ed[u]++; return u;
+	}
+	int topo[mxN], tp;
+	inline void build() {
+		queue<int> q; q.push(0); tp = 0;
+		while(!q.empty()) {
+			int u = q.front(); q.pop(); topo[tp++] = u;
+			for(int i = 0; i < 26; i++) {
+				int &to = trie[u][i];
+				if(to) {
+					fail[to] = (u == 0 ? 0 : trie[fail[u]][i]);	
+					q.push(to);
+				} else to = trie[fail[u]][i];
+			}
+		}
+	}
+	inline void DP() {
+		for (int i = tp - 1; i >= 0; i--) {
+			int u = topo[i];
+		}
+	}
+} AC;
